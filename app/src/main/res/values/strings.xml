@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Carsales</string>
     <string name="select_date_label">Seleccione una fecha</string>
+    <string name="main_error">Error al comunicarse con el servidor</string>
 </resources>

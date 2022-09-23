@@ -5,6 +5,6 @@ import com.aplication.carsales.common.entities.CovidDataEntity
 class MainRepository {
     private val remoteApi = RemoteApi()
 
-    suspend fun getWeatherForecast(date: String) : CovidDataEntity =
+    suspend fun getCovidDataFromDate(date: String) : CovidDataEntity =
         remoteApi.getCovidDataFromDate(date)
 }
