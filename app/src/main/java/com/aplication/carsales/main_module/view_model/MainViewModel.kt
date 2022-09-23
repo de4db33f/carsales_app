@@ -1,5 +1,6 @@
 package com.aplication.carsales.main_module.view_model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

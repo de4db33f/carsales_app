@@ -12,7 +12,6 @@
     </data>
 
     <FrameLayout
-
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -21,6 +20,7 @@
             android:layout_height="wrap_content"
             tools:context=".main_module.view.MainActivity"
             android:paddingHorizontal="@dimen/common_padding_max"
+            app:isGone="@{!viewModel.isLoaded()}"
             android:layout_gravity="center">
 
             <com.google.android.material.textview.MaterialTextView
@@ -39,7 +39,7 @@
                 android:id="@+id/confirm_cases"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Casos confirmados: 1234567"
+                android:text="@{@string/confirmed_cases(viewModel.result.data.confirmed)}"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:layout_marginVertical="@dimen/common_padding_min"
                 app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +49,7 @@
                 android:id="@+id/num_deaths"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Cantidad de personas fallecidas: 1234567"
+                android:text="@{@string/death_cases(viewModel.result.data.deaths)}"
                 android:layout_marginVertical="@dimen/common_padding_min"
                 android:textAppearance="?attr/textAppearanceBody2"
                 app:layout_constraintStart_toStartOf="parent"
@@ -88,6 +88,7 @@
             android:layout_width="wrap_content"
             android:indeterminate="true"
             android:indeterminateTint="@color/black"
+            app:isGone="@{viewModel.isLoaded()}"
             android:layout_gravity="center"/>
 
     </FrameLayout>

@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         lifecycleScope.launch{
-            binding.viewModel.getCovidDataFromDate("2022-09-22")
+            binding.viewModel?.getCovidDataFromDate("2022-09-22")
         }
     }
 }
