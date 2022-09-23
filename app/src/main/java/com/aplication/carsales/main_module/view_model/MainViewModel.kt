@@ -2,13 +2,14 @@ package com.aplication.carsales.main_module.view_model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.aplication.carsales.R
 import com.aplication.carsales.common.entities.CovidDataEntity
 import com.aplication.carsales.main_module.model.MainRepository
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewModelScope
 
-class MainViewModel {
+class MainViewModel: ViewModel() {
     private val repository = MainRepository()
 
     private val result = MutableLiveData<CovidDataEntity>()

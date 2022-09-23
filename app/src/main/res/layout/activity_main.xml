@@ -6,11 +6,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.aplication.carsales.main_module.view_model.MainViewModel" />
-
     </data>
 
     <FrameLayout
