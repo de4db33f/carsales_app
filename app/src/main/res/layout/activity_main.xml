@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".MainActivity"
+        tools:context=".main_module.view.MainActivity"
         android:paddingHorizontal="@dimen/common_padding_max"
         android:layout_gravity="center">
 
