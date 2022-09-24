@@ -27,7 +27,6 @@
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="15 de Abril del 2020"
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 android:textStyle="bold"
                 android:paddingBottom="@dimen/space_max"
