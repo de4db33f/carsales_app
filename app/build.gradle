@@ -34,6 +34,7 @@ android {
     dataBinding {
         enabled = true
     }
+    namespace 'com.aplication.carsales'
 }
 
 def lifecycle_version = "2.5"

@@ -1,18 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <variable
+            name="viewModel"
+            type="com.aplication.carsales.main_module.view_model.MainViewModel" />
+    </data>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".main_module.view.MainActivity"
+            android:paddingHorizontal="@dimen/common_padding_max"
+            app:isGone="@{!viewModel.isLoaded()}"
+            android:layout_gravity="center">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                android:textStyle="bold"
+                android:paddingBottom="@dimen/space_max"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/confirm_cases"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/confirmed_cases(viewModel.result.data.confirmed)}"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:layout_marginVertical="@dimen/common_padding_min"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/date"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/num_deaths"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/death_cases(viewModel.result.data.deaths)}"
+                android:layout_marginVertical="@dimen/common_padding_min"
+                android:textAppearance="?attr/textAppearanceBody2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/confirm_cases"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/home_image"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:src="@drawable/home"
+                android:scaleType="fitCenter"
+                android:layout_marginVertical="@dimen/common_padding_default"
+                app:layout_constraintTop_toBottomOf="@+id/num_deaths"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/select_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_button"
+                android:text="@string/select_date_label"
+                android:textColor="@color/black"
+                android:layout_marginVertical="@dimen/space_max"
+                app:layout_constraintTop_toBottomOf="@+id/home_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress_indicator"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/black"
+            app:isGone="@{viewModel.isLoaded()}"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
+
+
+</layout>
