@@ -1,7 +1,6 @@
 package com.aplication.carsales.main_module.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -14,6 +13,7 @@ import com.aplication.carsales.main_module.view_model.MainViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,31 +32,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupViews() {
-        setupTitle(null)
-        binding.selectDate.setOnClickListener {
+        binding.selectDateButton.setOnClickListener {
             val dpd = MaterialDatePicker.Builder.datePicker().build()
             dpd.addOnPositiveButtonClickListener {
                 lifecycleScope.launch{
-                    Log.i("DATEEEEE", CommonUtils.getFullDate(it))
-                    binding.viewModel?.getCovidDataFromDate(CommonUtils.getFullDate(it))
+                    //FIXME: Le tuve que sumar 1 día (en milisegundos) porque siempre obtenía el epoch del día anterior al que seleccionaba
+                    binding.viewModel?.getCovidDataFromDate(CommonUtils.getFullDate(it + 24 * 60 * 60 * 1000))
                 }
             }
-            dpd.show(supportFragmentManager, "")
+            dpd.show(supportFragmentManager, "DatePicker")
         }
     }
 
-    private fun setupTitle(date: String?){
-        val sdf = SimpleDateFormat("dd-MMMM-yyyy", Locale.getDefault())
-        var currentDate = ""
-        currentDate = if(date==null) {
-            val cal = Calendar.getInstance()
-            cal.add(Calendar.DATE, -1)
-            sdf.format(cal.time)
-        }else{
-            sdf.format(date)
-        }
-        binding.date.text = currentDate.replace("-", " de ")
-    }
 
     private fun setupObservers() {
         binding.viewModel?.let {
@@ -69,8 +56,8 @@ class MainActivity : AppCompatActivity() {
                 binding.numDeaths.text = result.data.deaths.toString()
             }
 
-            it.getdateSelected().observe(this){date ->
-                setupTitle(date)
+            it.getDateSelected().observe(this){ date ->
+                binding.date.text = CommonUtils.getDateFormatted(date)
             }
         }
     }
@@ -84,7 +71,11 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         lifecycleScope.launch{
-            binding.viewModel?.getCovidDataFromDate("2022-09-22")
+            val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val cal = Calendar.getInstance()
+            cal.add(Calendar.DATE, -2) //FIXME: el -2 es para restarle 2 días, ya que al momento de desarrollar (24/09) no habian datos para los días 24 y 23
+            val current = dateFormat.format(cal.time)
+            binding.viewModel?.getCovidDataFromDate(current)
         }
     }
 }
