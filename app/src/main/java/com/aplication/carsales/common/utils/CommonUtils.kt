@@ -1,5 +1,6 @@
 package com.aplication.carsales.common.utils
 
+import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -16,10 +17,18 @@ object CommonUtils {
     fun getDateFormatted(date: String): String{
         return try {
             val formattedDateSplit = date.split("-")
-            formattedDateSplit[0]+" de " + formattedDateSplit[1] + " del " + formattedDateSplit[2]
+            formattedDateSplit[0]+" de " + getMonthName(date) + " del " + formattedDateSplit[2]
         }catch (e: Exception){
             ""
         }
+
+    }
+
+    private fun getMonthName(date: String): String{
+        val cal = Calendar.getInstance();
+        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        cal.time = sdf.parse(date) as Date
+        return SimpleDateFormat("MMMM", Locale.getDefault()).format(cal.time);
 
     }
 
