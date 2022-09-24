@@ -1,6 +1,5 @@
 package com.aplication.carsales.common.utils
 
-import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 
