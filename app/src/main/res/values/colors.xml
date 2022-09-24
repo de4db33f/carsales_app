@@ -6,5 +6,5 @@
     <color name="indigo_200">#FF9fa8da</color>
     <color name="indigo_700">#FF303f9f</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFEAEAEA</color>
+    <color name="white">#FFFFFFFF</color>
 </resources>
