@@ -46,8 +46,8 @@
 
                 <ImageView
                     android:id="@+id/dot1"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="@dimen/size_dot"
+                    android:layout_height="@dimen/size_dot"
                     android:src="@drawable/dot"
                     android:layout_marginEnd="@dimen/common_padding_min"
                     android:layout_gravity="center"
@@ -75,8 +75,8 @@
 
                 <ImageView
                     android:id="@+id/dot2"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="@dimen/size_dot"
+                    android:layout_height="@dimen/size_dot"
                     android:src="@drawable/dot"
                     android:layout_marginEnd="@dimen/common_padding_min"
                     android:layout_gravity="center"
@@ -95,7 +95,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/home_image"
                 android:layout_width="0dp"
-                android:layout_height="200dp"
+                android:layout_height="@dimen/height_home_image"
                 android:src="@drawable/home"
                 android:scaleType="fitCenter"
                 android:layout_marginVertical="@dimen/common_padding_default"
