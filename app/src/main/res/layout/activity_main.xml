@@ -50,7 +50,8 @@
                     android:layout_height="10dp"
                     android:src="@drawable/dot"
                     android:layout_marginEnd="@dimen/common_padding_min"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/dot_confirm_cases" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/confirm_cases"
@@ -78,7 +79,8 @@
                     android:layout_height="10dp"
                     android:src="@drawable/dot"
                     android:layout_marginEnd="@dimen/common_padding_min"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/dot1" />
 
 
                 <com.google.android.material.textview.MaterialTextView

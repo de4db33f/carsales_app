@@ -6,7 +6,7 @@ import com.aplication.carsales.common.entities.CovidDataEntity
 import com.aplication.carsales.main_module.model.MainRepository
 import kotlinx.coroutines.launch
 
-class MainViewModel( ): ViewModel() {
+class MainViewModel: ViewModel() {
     private val repository = MainRepository()
 
     private val result = MutableLiveData<CovidDataEntity>()
