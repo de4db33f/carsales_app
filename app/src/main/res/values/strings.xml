@@ -5,4 +5,7 @@
     <string name="confirmed_cases">Casos confirmados: %s</string>
     <string name="death_cases">Cantidad de muertes confirmadas: %s</string>
     <string name="invalid_date">La fecha elegida no contiene datos</string>
+    <string name="dot1">Dot death number</string>
+    <string name="dot_confirm_cases">Dot confirm cases</string>
+    <string name="splash_screen_image_desc">Splash Screen image</string>
 </resources>

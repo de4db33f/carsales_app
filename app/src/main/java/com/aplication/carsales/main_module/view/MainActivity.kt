@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch{
             val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val cal = Calendar.getInstance()
-            cal.add(Calendar.DATE, -2) //FIXME: el -2 es para restarle 2 días, ya que al momento de desarrollar (24/09) no habian datos para los días 24 y 23
+            cal.add(Calendar.DATE, -1)
             val current = dateFormat.format(cal.time)
             binding.viewModel?.getCovidDataFromDate(current)
         }

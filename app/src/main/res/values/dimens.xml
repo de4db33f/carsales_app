@@ -4,4 +4,7 @@
     <dimen name="common_padding_min">8dp</dimen>
     <dimen name="common_padding_max">24dp</dimen>
     <dimen name="space_max">40dp</dimen>
+    <dimen name="height_home_image">200dp</dimen>
+    <dimen name="size_dot">10dp</dimen>
+    <dimen name="size_image_splash">250dp</dimen>
 </resources>

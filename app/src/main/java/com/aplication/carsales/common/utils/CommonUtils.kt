@@ -5,7 +5,7 @@ import java.util.*
 
 object CommonUtils {
 
-    fun getFullDate(epoch: Long): String = getFormattedTime(epoch, )
+    fun getFullDate(epoch: Long): String = getFormattedTime(epoch)
 
     private fun getFormattedTime(epoch: Long): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -24,10 +24,10 @@ object CommonUtils {
     }
 
     private fun getMonthName(date: String): String{
-        val cal = Calendar.getInstance();
-        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        val cal = Calendar.getInstance()
+        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         cal.time = sdf.parse(date) as Date
-        return SimpleDateFormat("MMMM", Locale.getDefault()).format(cal.time);
+        return SimpleDateFormat("MMMM", Locale.getDefault()).format(cal.time)
 
     }
 
