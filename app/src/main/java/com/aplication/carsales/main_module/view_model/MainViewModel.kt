@@ -5,8 +5,9 @@ import com.aplication.carsales.R
 import com.aplication.carsales.common.entities.CovidDataEntity
 import com.aplication.carsales.main_module.model.MainRepository
 import kotlinx.coroutines.launch
+import java.net.UnknownHostException
 
-class MainViewModel: ViewModel() {
+class MainViewModel : ViewModel() {
     private val repository = MainRepository()
 
     private val result = MutableLiveData<CovidDataEntity>()
@@ -21,13 +22,15 @@ class MainViewModel: ViewModel() {
     private val loading = MutableLiveData<Boolean>()
     fun isLoaded() = loading
 
-    suspend fun getCovidDataFromDate(date: String){
+    suspend fun getCovidDataFromDate(date: String) {
         viewModelScope.launch {
             try {
                 loading.value = false
-                val  resultServer = repository.getCovidDataFromDate(date)
+                val resultServer = repository.getCovidDataFromDate(date)
                 result.value = resultServer
                 dateSelected.value = date.split("-").reversed().joinToString("-")
+            } catch (e: UnknownHostException) {
+                snackBarMsg.value = R.string.unknown_host_error
             } catch (e: Exception) {
                 snackBarMsg.value = R.string.main_error
             } finally {
