@@ -1,5 +1,6 @@
 package com.aplication.carsales.common.data_access
 
+import com.aplication.carsales.common.utils.Constants
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -8,7 +9,7 @@ class CovidHeaderInterceptor : Interceptor {
         proceed(
             request()
                 .newBuilder()
-                .addHeader("X-RapidAPI-Key", "96afa298cbmsh913f910f914494cp110c39jsn01a32d68445e")
+                .addHeader(Constants.HEADER_API_KEY, Constants.HEADER_API_VAL)
                 .build()
         )
     }
