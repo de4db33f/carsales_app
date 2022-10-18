@@ -1,12 +1,13 @@
 package com.aplication.carsales.main_module.view_model
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.aplication.carsales.R
 import com.aplication.carsales.common.entities.CovidDataEntity
 import com.aplication.carsales.main_module.model.MainRepository
 import kotlinx.coroutines.launch
 
-class MainViewModel: ViewModel() {
+class MainViewModel : ViewModel() {
     private val repository = MainRepository()
 
     private val result = MutableLiveData<CovidDataEntity>()
@@ -21,11 +22,11 @@ class MainViewModel: ViewModel() {
     private val loading = MutableLiveData<Boolean>()
     fun isLoaded() = loading
 
-    suspend fun getCovidDataFromDate(date: String){
+    suspend fun getCovidDataFromDate(date: String) {
         viewModelScope.launch {
             try {
                 loading.value = false
-                val  resultServer = repository.getCovidDataFromDate(date)
+                val resultServer = repository.getCovidDataFromDate(date)
                 result.value = resultServer
                 dateSelected.value = date.split("-").reversed().joinToString("-")
             } catch (e: Exception) {
