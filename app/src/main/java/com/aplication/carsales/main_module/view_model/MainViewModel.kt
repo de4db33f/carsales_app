@@ -5,11 +5,16 @@ import com.aplication.carsales.R
 import com.aplication.carsales.common.entities.CovidDataEntity
 import com.aplication.carsales.main_module.model.MainRepository
 import com.aplication.carsales.main_module.usecases.GetCovidDataUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
-    private val getCovidDataUseCase: GetCovidDataUseCase = GetCovidDataUseCase(MainRepository())
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val getCovidDataUseCase: GetCovidDataUseCase
+): ViewModel() {
+    //private val getCovidDataUseCase: GetCovidDataUseCase = GetCovidDataUseCase(MainRepository())
 
     private val result = MutableLiveData<CovidDataEntity>()
     fun getResult(): LiveData<CovidDataEntity> = result
