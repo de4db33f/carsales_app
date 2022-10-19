@@ -22,7 +22,7 @@ class MainViewModel : ViewModel() {
     private val loading = MutableLiveData<Boolean>()
     fun isLoaded() = loading
 
-    suspend fun getCovidDataFromDate(date: String) {
+    fun getCovidDataFromDate(date: String) {
         viewModelScope.launch {
             try {
                 loading.value = false
