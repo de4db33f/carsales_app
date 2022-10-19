@@ -1,6 +1,5 @@
 package com.aplication.carsales.main_module.view_model
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.aplication.carsales.R
 import com.aplication.carsales.common.entities.CovidDataEntity
@@ -22,7 +21,7 @@ class MainViewModel : ViewModel() {
     private val loading = MutableLiveData<Boolean>()
     fun isLoaded() = loading
 
-    suspend fun getCovidDataFromDate(date: String) {
+    fun getCovidDataFromDate(date: String) {
         viewModelScope.launch {
             try {
                 loading.value = false

@@ -10,7 +10,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RemoteApi {
+object RemoteApi {
 
     private val client = OkHttpClient.Builder().addInterceptor(CovidHeaderInterceptor()).build()
 
