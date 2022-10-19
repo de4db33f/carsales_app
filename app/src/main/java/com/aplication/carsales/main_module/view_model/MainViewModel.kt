@@ -3,18 +3,17 @@ package com.aplication.carsales.main_module.view_model
 import androidx.lifecycle.*
 import com.aplication.carsales.R
 import com.aplication.carsales.common.entities.CovidDataEntity
-import com.aplication.carsales.main_module.model.MainRepository
 import com.aplication.carsales.main_module.usecases.GetCovidDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
-import java.net.UnknownHostException
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getCovidDataUseCase: GetCovidDataUseCase
-): ViewModel() {
-    //private val getCovidDataUseCase: GetCovidDataUseCase = GetCovidDataUseCase(MainRepository())
+) : ViewModel() {
 
     private val result = MutableLiveData<CovidDataEntity>()
     fun getResult(): LiveData<CovidDataEntity> = result
@@ -29,20 +28,19 @@ class MainViewModel @Inject constructor(
     fun isLoaded() = loading
 
     fun getCovidDataFromDate(date: String) {
-        viewModelScope.launch {
-            try {
-                loading.value = false
-                val resultServer = getCovidDataUseCase.execute(date)
-                result.value = resultServer
-                dateSelected.value = date.split("-").reversed().joinToString("-")
-            } catch (e: UnknownHostException) {
+        loading.postValue(false)
+        getCovidDataUseCase(date).onEach {
+            result.postValue(it)
+            dateSelected.postValue(date.split("-").reversed().joinToString("-"))
+            loading.postValue(true)
+        }.catch {
+            if (it.toString().contains("UnknownHostException")) {
                 snackBarMsg.value = R.string.unknown_host_error
-            } catch (e: Exception) {
+            } else {
                 snackBarMsg.value = R.string.main_error
-            } finally {
-                loading.value = true
             }
-        }
+            loading.postValue(true)
+        }.launchIn(viewModelScope)
     }
 
 }

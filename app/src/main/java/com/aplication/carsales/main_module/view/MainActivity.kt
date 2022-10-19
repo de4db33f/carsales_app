@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         binding.selectDateButton.setOnClickListener {
             val dpd = MaterialDatePicker.Builder.datePicker().build()
             dpd.addOnPositiveButtonClickListener {
-                lifecycleScope.launch{
+                lifecycleScope.launch {
                     //FIXME: Le tuve que sumar 1 día (en milisegundos) porque siempre obtenía el epoch del día anterior al que seleccionaba
                     binding.viewModel?.getCovidDataFromDate(CommonUtils.getFullDate(it + 24 * 60 * 60 * 1000))
                 }
@@ -49,18 +49,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupObservers() {
         binding.viewModel?.let {
-            it.getSnackBarMsg().observe(this){ resMsg ->
+            it.getSnackBarMsg().observe(this) { resMsg ->
                 Snackbar.make(binding.root, resMsg, Snackbar.LENGTH_LONG).show()
             }
 
-            it.getResult().observe(this){ result ->
+            it.getResult().observe(this) { result ->
                 binding.confirmCases.text = result.data.confirmed.toString()
                 binding.numDeaths.text = result.data.deaths.toString()
             }
 
-            it.getDateSelected().observe(this){ date ->
+            it.getDateSelected().observe(this) { date ->
                 binding.date.text = CommonUtils.getDateFormatted(date)
             }
+
         }
     }
 
@@ -72,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val cal = Calendar.getInstance()
             cal.add(Calendar.DATE, -1)
