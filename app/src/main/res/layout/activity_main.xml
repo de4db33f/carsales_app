@@ -58,7 +58,6 @@
                     android:id="@+id/confirm_cases"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/confirmed_cases(String.valueOf(viewModel.result.data.confirmed))}"
                     android:textAppearance="?attr/textAppearanceBody2" />
 
             </LinearLayout>
@@ -87,7 +86,6 @@
                     android:id="@+id/num_deaths"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/death_cases(String.valueOf(viewModel.result.data.deaths))}"
                     android:textAppearance="?attr/textAppearanceBody2" />
 
             </LinearLayout>

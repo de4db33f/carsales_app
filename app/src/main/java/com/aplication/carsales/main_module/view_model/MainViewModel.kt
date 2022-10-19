@@ -2,12 +2,10 @@ package com.aplication.carsales.main_module.view_model
 
 import androidx.lifecycle.*
 import com.aplication.carsales.R
-import com.aplication.carsales.common.entities.CovidDataEntity
+import com.aplication.carsales.common.utils.MainViewState
 import com.aplication.carsales.main_module.usecases.GetCovidDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,32 +13,34 @@ class MainViewModel @Inject constructor(
     private val getCovidDataUseCase: GetCovidDataUseCase
 ) : ViewModel() {
 
-    private val result = MutableLiveData<CovidDataEntity>()
-    fun getResult(): LiveData<CovidDataEntity> = result
-
-    private val dateSelected = MutableLiveData<String>()
-    fun getDateSelected(): LiveData<String> = dateSelected
-
-    private val snackBarMsg = MutableLiveData<Int>()
-    fun getSnackBarMsg() = snackBarMsg
+    private val dataStateFlow: MutableStateFlow<MainViewState> =
+        MutableStateFlow(MainViewState.Loading)
+    val stateFlow: StateFlow<MainViewState> = dataStateFlow
 
     private val loading = MutableLiveData<Boolean>()
     fun isLoaded() = loading
 
     fun getCovidDataFromDate(date: String) {
-        loading.postValue(false)
+        showProgressBar()
         getCovidDataUseCase(date).onEach {
-            result.postValue(it)
-            dateSelected.postValue(date.split("-").reversed().joinToString("-"))
-            loading.postValue(true)
+            dataStateFlow.value =
+                MainViewState.Success(it, date.split("-").reversed().joinToString("-"))
+            hideProgressBar()
         }.catch {
             if (it.toString().contains("UnknownHostException")) {
-                snackBarMsg.value = R.string.unknown_host_error
+                dataStateFlow.value = MainViewState.Failure(R.string.unknown_host_error)
             } else {
-                snackBarMsg.value = R.string.main_error
+                dataStateFlow.value = MainViewState.Failure(R.string.main_error)
             }
-            loading.postValue(true)
+            hideProgressBar()
         }.launchIn(viewModelScope)
     }
 
+    private fun hideProgressBar() {
+        loading.postValue(true)
+    }
+
+    private fun showProgressBar() {
+        loading.postValue(false)
+    }
 }
