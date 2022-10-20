@@ -8,15 +8,18 @@ import androidx.lifecycle.lifecycleScope
 import com.aplication.carsales.BR
 import com.aplication.carsales.R
 import com.aplication.carsales.common.utils.CommonUtils
+import com.aplication.carsales.common.utils.MainViewState
 import com.aplication.carsales.databinding.ActivityMainBinding
 import com.aplication.carsales.main_module.view_model.MainViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -26,7 +29,6 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         setupViewModel()
-        setupObservers()
         setupViews()
 
     }
@@ -35,29 +37,36 @@ class MainActivity : AppCompatActivity() {
         binding.selectDateButton.setOnClickListener {
             val dpd = MaterialDatePicker.Builder.datePicker().build()
             dpd.addOnPositiveButtonClickListener {
-                lifecycleScope.launch{
+                lifecycleScope.launch {
                     //FIXME: Le tuve que sumar 1 día (en milisegundos) porque siempre obtenía el epoch del día anterior al que seleccionaba
                     binding.viewModel?.getCovidDataFromDate(CommonUtils.getFullDate(it + 24 * 60 * 60 * 1000))
+                    showState()
                 }
             }
             dpd.show(supportFragmentManager, "DatePicker")
         }
     }
 
+    private suspend fun showState() {
+        binding.viewModel?.stateFlow?.collect {
+            when (it) {
+                is MainViewState.Failure -> {
+                    Snackbar.make(binding.root, it.msg, Snackbar.LENGTH_LONG).show()
+                }
+                is MainViewState.Success -> {
+                    binding.confirmCases.text =
+                        getString(R.string.confirmed_cases, it.result.data.confirmed.toString())
+                    binding.numDeaths.text =
+                        getString(R.string.death_cases, it.result.data.deaths.toString())
 
-    private fun setupObservers() {
-        binding.viewModel?.let {
-            it.getSnackBarMsg().observe(this){ resMsg ->
-                Snackbar.make(binding.root, resMsg, Snackbar.LENGTH_LONG).show()
-            }
+                    binding.date.text = CommonUtils.getDateFormatted(it.date)
+                }
+                else -> {
+                    binding.confirmCases.text = getString(R.string.confirmed_cases, "0")
+                    binding.numDeaths.text = getString(R.string.death_cases, "0")
 
-            it.getResult().observe(this){ result ->
-                binding.confirmCases.text = result.data.confirmed.toString()
-                binding.numDeaths.text = result.data.deaths.toString()
-            }
-
-            it.getDateSelected().observe(this){ date ->
-                binding.date.text = CommonUtils.getDateFormatted(date)
+                    binding.date.text = getString(R.string.fatal_error_date)
+                }
             }
         }
     }
@@ -70,12 +79,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val cal = Calendar.getInstance()
             cal.add(Calendar.DATE, -1)
             val current = dateFormat.format(cal.time)
             binding.viewModel?.getCovidDataFromDate(current)
+            showState()
         }
     }
 }

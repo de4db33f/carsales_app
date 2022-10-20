@@ -2,41 +2,45 @@ package com.aplication.carsales.main_module.view_model
 
 import androidx.lifecycle.*
 import com.aplication.carsales.R
-import com.aplication.carsales.common.entities.CovidDataEntity
-import com.aplication.carsales.main_module.model.MainRepository
-import kotlinx.coroutines.launch
-import java.net.UnknownHostException
+import com.aplication.carsales.common.utils.MainViewState
+import com.aplication.carsales.main_module.usecases.GetCovidDataUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
-    private val repository = MainRepository()
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val getCovidDataUseCase: GetCovidDataUseCase
+) : ViewModel() {
 
-    private val result = MutableLiveData<CovidDataEntity>()
-    fun getResult(): LiveData<CovidDataEntity> = result
-
-    private val dateSelected = MutableLiveData<String>()
-    fun getDateSelected(): LiveData<String> = dateSelected
-
-    private val snackBarMsg = MutableLiveData<Int>()
-    fun getSnackBarMsg() = snackBarMsg
+    private val dataStateFlow: MutableStateFlow<MainViewState> =
+        MutableStateFlow(MainViewState.Loading)
+    val stateFlow: StateFlow<MainViewState> = dataStateFlow
 
     private val loading = MutableLiveData<Boolean>()
     fun isLoaded() = loading
 
     fun getCovidDataFromDate(date: String) {
-        viewModelScope.launch {
-            try {
-                loading.value = false
-                val resultServer = repository.getCovidDataFromDate(date)
-                result.value = resultServer
-                dateSelected.value = date.split("-").reversed().joinToString("-")
-            } catch (e: UnknownHostException) {
-                snackBarMsg.value = R.string.unknown_host_error
-            } catch (e: Exception) {
-                snackBarMsg.value = R.string.main_error
-            } finally {
-                loading.value = true
+        showProgressBar()
+        getCovidDataUseCase(date).onEach {
+            dataStateFlow.value =
+                MainViewState.Success(it, date.split("-").reversed().joinToString("-"))
+            hideProgressBar()
+        }.catch {
+            if (it.toString().contains("UnknownHostException")) {
+                dataStateFlow.value = MainViewState.Failure(R.string.unknown_host_error)
+            } else {
+                dataStateFlow.value = MainViewState.Failure(R.string.main_error)
             }
-        }
+            hideProgressBar()
+        }.launchIn(viewModelScope)
     }
 
+    private fun hideProgressBar() {
+        loading.postValue(true)
+    }
+
+    private fun showProgressBar() {
+        loading.postValue(false)
+    }
 }
