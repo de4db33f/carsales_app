@@ -10,4 +10,6 @@
     <string name="dot1">Dot death number</string>
     <string name="dot_confirm_cases">Dot confirm cases</string>
     <string name="splash_screen_image_desc">Splash Screen image</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
