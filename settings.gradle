@@ -19,5 +19,8 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Carsales"
+rootProject.name = "app"
 include ':app'
+
+include ':routercovidmodule'
+project(':routercovidmodule').projectDir = new File('routercovidmodule/app')
